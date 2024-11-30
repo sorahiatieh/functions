@@ -15,4 +15,30 @@
         }
     }
 
+function isPage($page_name){
+    global $LINK;
+    $q="select  count(1) from tbl_pages where `enable`=1 and `name`='$page_name'";
+    $result=mysqli_query($LINK,$q) or(mysqli_error($LINK));
+    $row=mysqli_fetch_row($result);
+
+    mysqli_free_result($result);
+
+    if($row[0] !=0)
+        return true;
+
+    return false;
+}
+
+function getPageDetails($page_name){
+    global $LINK;
+    $q="select  * from tbl_pages where `enable`=1 and `name`='$page_name'";
+    $result=mysqli_query($LINK,$q) or(mysqli_error($LINK));
+    $field=mysqli_fetch_assoc($result);
+
+    mysqli_free_result($result);
+
+
+    return $field;
+}
+
 ?>
