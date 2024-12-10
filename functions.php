@@ -41,4 +41,51 @@ function getPageDetails($page_name){
     return $field;
 }
 
+function makeOutput($arr){
+    $output = '';
+    foreach ($arr as $key => $value) {
+        $output .= "'{$key}' = '{$value}'";
+    }
+    if (strlen($output)>0){
+        $output=substr($output,0,strlen($output)-1);
+    }
+
+    return $output;
+}
+
+function getExtensionName($name){
+    //codes
+}
+
+function registerUser($details){
+    global $LINK;
+
+    $fields="";
+    $values="";
+
+    foreach ($details as $key => $value) {
+        $fields .="`$key` ,";
+        $values .="'$value' ,";
+    }
+
+    if (strlen($fields) !=0) {
+        $fields=mb_substr($fields,0,mb_strlen($fields)-1);
+        $values=mb_substr($values,mb_strlen($fields)-1);
+    }
+
+    $q="insert into tbl_registers ($fields) values ($values)";
+    //die($q);
+    mysqli_query($LINK,$q) or (mysqli_error($LINK));
+
+     return mysqli_insert_id($LINK);
+}
+
+function getIp(){
+    return $_SERVER['REMOTE_ADDR'];
+}
+
+function getRealIp(){
+    return getIp();
+}
+
 ?>
