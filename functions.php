@@ -54,7 +54,10 @@ function makeOutput($arr){
 }
 
 function getExtensionName($name){
-    //codes
+    $pos=strrpos($name,'.');
+    $pasvand=substr($name,$pos+1);
+
+    return strtolower($pasvand);
 }
 
 function registerUser($details){
@@ -70,7 +73,7 @@ function registerUser($details){
 
     if (strlen($fields) !=0) {
         $fields=mb_substr($fields,0,mb_strlen($fields)-1);
-        $values=mb_substr($values,mb_strlen($fields)-1);
+        $values=mb_substr($values,mb_strlen($values)-1);
     }
 
     $q="insert into tbl_registers ($fields) values ($values)";
@@ -78,6 +81,29 @@ function registerUser($details){
     mysqli_query($LINK,$q) or (mysqli_error($LINK));
 
      return mysqli_insert_id($LINK);
+}
+
+function addComment($details){
+    global $LINK;
+
+    $fields="";
+    $values="";
+
+    foreach ($details as $key => $value) {
+        $fields .="`$key` ,";
+        $values .="'$value' ,";
+    }
+
+    if (strlen($fields) !=0) {
+        $fields=mb_substr($fields,0,mb_strlen($fields)-1);
+        $values=mb_substr($values,mb_strlen($values)-1);
+    }
+
+    $q="insert into tbl_comments ($fields) values ($values)";
+    //die($q);
+    mysqli_query($LINK,$q) or (mysqli_error($LINK));
+
+    return mysqli_insert_id($LINK);
 }
 
 function getIp(){
